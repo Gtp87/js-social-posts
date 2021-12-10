@@ -38,7 +38,7 @@ const post = [
     },
     {
         name: 'Albus Silente',
-        profile: 'image=1',
+        profile: '',
         date: '11/30/2001',
         text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quod similique, maxime nam, facilis debitis dicta saepe doloribus repellendus corrupti cumque nostrum fugit. Sint, soluta blanditiis laboriosam facilis ea quidem aperiam!',
         likes: 328,
@@ -46,7 +46,7 @@ const post = [
     },
     {
         name: 'Severus Piton',
-        profile: 'image=666',
+        profile: '',
         date: '01/01/2022',
         text: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Possimus cupiditate autem sunt accusamus esse necessitatibus animi ex laborum veritatis rerum beatae exercitationem, eius ratione pariatur aliquid nulla vero culpa rem.',
         likes: 1818,
@@ -59,46 +59,100 @@ const post = [
 
 let container = document.getElementById('container');
 
+// funzione per inziiali
+
+const getInitials = (name) => {
+    let initials = name.split(' ');
+
+    if (initials.length > 1) {
+        initials = initials.shift().charAt(0) + initials.pop().charAt(0);
+    } else {
+        initials = name.substring(0, 2);
+    }
+
+    return initials.toUpperCase();
+}
+
 // ciclo for per inserire i post
 
 for (let i = 0; i < post.length; i++) {
     const element = post[i];
+    let initials = getInitials(element.name)
 
-    // creo template post
-    const templateCard = `
+    // se non ha immagine profilo
+    if (element.profile == '') {
+        const templateDiv = `
         <div class="post">
-        <div class="post__header">
-            <div class="post-meta">                    
-                <div class="post-meta__icon">
-                    <img class="profile-pic" src="https://unsplash.it/300/300?${element.profile} " alt="${element.name}">                    
+            <div class="post__header">
+                <div class="post-meta">                    
+                    <div class="post-meta__icon">
+                        <div class="profile-pic-default">
+                            <span>${initials}</span>
+                        </div>                    
+                    </div>
+                    <div class="post-meta__data">
+                        <div class="post-meta__author">${element.name}</div>
+                        <div class="post-meta__time">${element.date}</div>
+                    </div>                    
                 </div>
-                <div class="post-meta__data">
-                    <div class="post-meta__author">${element.name}</div>
-                    <div class="post-meta__time">${element.date}</div>
-                </div>                    
             </div>
+            <div class="post__text">${element.text}</div>
+            <div class="post__image">
+                <img src="https://unsplash.it/300/300?${element.image}" alt="">
+            </div>
+            <div class="post__footer">
+                <div class="likes js-likes">
+                    <div class="likes__cta">
+                        <a class="like-button  js-like-button" data-postid="1">
+                            <i class="like-button__icon fas fa-thumbs-up" aria-hidden="true"></i>
+                            <span class="like-button__label">Mi Piace</span>
+                        </a>
+                    </div>
+                    <div class="likes__counter">
+                        Piace a <b id="like-counter-1" class="js-likes-counter">${element.likes}</b> persone
+                    </div>
+                </div> 
+            </div>            
         </div>
-        <div class="post__text">${element.text}</div>
-        <div class="post__image">
-            <img src="https://unsplash.it/300/300?${element.image}" alt="">
-        </div>
-        <div class="post__footer">
-            <div class="likes js-likes">
-                <div class="likes__cta">
-                    <a class="like-button  js-like-button" data-postid="1">
-                        <i class="like-button__icon fas fa-thumbs-up" aria-hidden="true"></i>
-                        <span class="like-button__label">Mi Piace</span>
-                    </a>
+        `;
+        container.innerHTML += templateDiv;
+    
+    // altrimenti se ha immagine profilo
+    } else {
+        const templateCard = `
+            <div class="post">
+            <div class="post__header">
+                <div class="post-meta">                    
+                    <div class="post-meta__icon">
+                        <img class="profile-pic" src="https://unsplash.it/300/300?${element.profile} " alt="${element.name}">                    
+                    </div>
+                    <div class="post-meta__data">
+                        <div class="post-meta__author">${element.name}</div>
+                        <div class="post-meta__time">${element.date}</div>
+                    </div>                    
                 </div>
-                <div class="likes__counter">
-                    Piace a <b id="like-counter-1" class="js-likes-counter">${element.likes}</b> persone
-                </div>
-            </div> 
-        </div>            
-        </div>
-        `
-    container.innerHTML += templateCard;
-
+            </div>
+            <div class="post__text">${element.text}</div>
+            <div class="post__image">
+                <img src="https://unsplash.it/300/300?${element.image}" alt="">
+            </div>
+            <div class="post__footer">
+                <div class="likes js-likes">
+                    <div class="likes__cta">
+                        <a class="like-button  js-like-button" data-postid="1">
+                            <i class="like-button__icon fas fa-thumbs-up" aria-hidden="true"></i>
+                            <span class="like-button__label">Mi Piace</span>
+                        </a>
+                    </div>
+                    <div class="likes__counter">
+                        Piace a <b id="like-counter-1" class="js-likes-counter">${element.likes}</b> persone
+                    </div>
+                </div> 
+            </div>            
+            </div>
+            `
+        container.innerHTML += templateCard;
+    }
 }
 
 // evento like
@@ -110,17 +164,17 @@ let likeCounter = document.querySelectorAll('.js-likes-counter');
 // ciclo for per tutti i bottoni
 for (let i = 0; i < buttonLike.length; i++) {
     // al click aggiungo o rimuovo la classe
-   buttonLike[i].addEventListener('click', function () {
-      buttonLike[i].classList.toggle('like-button--liked');
+    buttonLike[i].addEventListener('click', function () {
+        buttonLike[i].classList.toggle('like-button--liked');
 
-    //   se premo aumento il nr like
-       if (buttonLike[i].classList.contains('like-button--liked') == true){
-           likeCounter[i].innerHTML = post[i].likes += 1;
-    //   altrimenti premo di nuovo e diminuisco il like
+        //   se premo aumento il nr like
+        if (buttonLike[i].classList.contains('like-button--liked') == true) {
+            likeCounter[i].innerHTML = post[i].likes += 1;
+            //   altrimenti premo di nuovo e diminuisco il like
         } else {
-           likeCounter[i].innerHTML = post[i].likes -= 1; 
-       }
-        
-   })
-    
+            likeCounter[i].innerHTML = post[i].likes -= 1;
+        }
+
+    })
+
 }
