@@ -9,6 +9,8 @@
 // 3. Al click su un pulsante “Mi Piace” di un post, incrementare il contatore di like al post e cambiare colore al testo del bottone.
 
 
+// creo array
+
 const post = [
     {
         name: 'Phil Mangione',
@@ -16,7 +18,7 @@ const post = [
         date: '03/23/1798',
         text: 'Placeat libero ipsa nobis ipsum quibusdam quas harum ut. Distinctio minima iusto. Ad ad maiores et sint voluptate recusandae architecto. Et nihil ullam aut alias.',
         likes: 38,
-        image: 'image=171'
+        image: 'image=171',
     },
     {
         name: 'Harry Potter',
@@ -24,15 +26,15 @@ const post = [
         date: '12/15/2041',
         text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Repellat, deserunt! Tempore reprehenderit quaerat, deleniti sit nobis harum molestiae corrupti dolores labore praesentium vel neque quae sequi quidem eos. Nostrum, odit!',
         likes: 300,
-        image: 'image=11'
+        image: 'image=11',
     },
     {
         name: 'Hermione Granger',
-        profile: 'image=15',
+        profile: 'image=100',
         date: '12/22/2041',
         text: 'Lorem, ipsum dolor sit amet consectetur adipisicing elit. Id magnam molestias in vel, numquam tenetur. Nulla eaque error voluptates magni, aspernatur eveniet excepturi aut eum porro expedita tempore temporibus ipsam.',
         likes: 18,
-        image: 'image=104'
+        image: 'image=104',
     },
     {
         name: 'Albus Silente',
@@ -40,7 +42,7 @@ const post = [
         date: '11/30/2001',
         text: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Quod similique, maxime nam, facilis debitis dicta saepe doloribus repellendus corrupti cumque nostrum fugit. Sint, soluta blanditiis laboriosam facilis ea quidem aperiam!',
         likes: 328,
-        image: 'image=104'
+        image: 'image=174',
     },
     {
         name: 'Severus Piton',
@@ -48,8 +50,53 @@ const post = [
         date: '01/01/2022',
         text: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit. Possimus cupiditate autem sunt accusamus esse necessitatibus animi ex laborum veritatis rerum beatae exercitationem, eius ratione pariatur aliquid nulla vero culpa rem.',
         likes: 1818,
-        image: ''
+        image: 'image=200',
+        
     },
-
-
 ]
+
+// prendo in considerazione il container
+
+let container = document.getElementById('container');
+
+// ciclo for per inserire i post
+
+for (let index = 0; index < post.length; index++) {
+    const element = post[index];
+
+    // creo template post
+    const templateCard = `
+        <div class="post">
+        <div class="post__header">
+            <div class="post-meta">                    
+                <div class="post-meta__icon">
+                    <img class="profile-pic" src="https://unsplash.it/300/300?${element.profile} " alt="${element.name}">                    
+                </div>
+                <div class="post-meta__data">
+                    <div class="post-meta__author">${element.name}</div>
+                    <div class="post-meta__time">${element.date}</div>
+                </div>                    
+            </div>
+        </div>
+        <div class="post__text">${element.text}</div>
+        <div class="post__image">
+            <img src="https://unsplash.it/300/300?${element.image}" alt="">
+        </div>
+        <div class="post__footer">
+            <div class="likes js-likes">
+                <div class="likes__cta">
+                    <a class="like-button  js-like-button" data-postid="1">
+                        <i class="like-button__icon fas fa-thumbs-up" aria-hidden="true"></i>
+                        <span class="like-button__label">Mi Piace</span>
+                    </a>
+                </div>
+                <div class="likes__counter">
+                    Piace a <b id="like-counter-1" class="js-likes-counter">${element.likes}</b> persone
+                </div>
+            </div> 
+        </div>            
+        </div>
+        `
+    container.innerHTML += templateCard;
+
+}
