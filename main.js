@@ -61,8 +61,8 @@ let container = document.getElementById('container');
 
 // ciclo for per inserire i post
 
-for (let index = 0; index < post.length; index++) {
-    const element = post[index];
+for (let i = 0; i < post.length; i++) {
+    const element = post[i];
 
     // creo template post
     const templateCard = `
@@ -99,4 +99,28 @@ for (let index = 0; index < post.length; index++) {
         `
     container.innerHTML += templateCard;
 
+}
+
+// evento like
+
+// seleziono le variabili
+let buttonLike = document.querySelectorAll('.js-like-button');
+let likeCounter = document.querySelectorAll('.js-likes-counter');
+
+// ciclo for per tutti i bottoni
+for (let i = 0; i < buttonLike.length; i++) {
+    // al click aggiungo o rimuovo la classe
+   buttonLike[i].addEventListener('click', function () {
+      buttonLike[i].classList.toggle('like-button--liked');
+
+    //   se premo aumento il nr like
+       if (buttonLike[i].classList.contains('like-button--liked') == true){
+           likeCounter[i].innerHTML = post[i].likes += 1;
+    //   altrimenti premo di nuovo e diminuisco il like
+        } else {
+           likeCounter[i].innerHTML = post[i].likes -= 1; 
+       }
+        
+   })
+    
 }
